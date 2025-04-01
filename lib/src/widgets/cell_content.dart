@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:table_calendar/src/customization/calendar_builders.dart';
 import 'package:table_calendar/src/customization/calendar_style.dart';
 
-class CellContent<S> extends StatelessWidget {
+class CellContent<T, S> extends StatelessWidget {
   final DateTime day;
   final DateTime focusedDay;
   final dynamic locale;
@@ -20,9 +20,9 @@ class CellContent<S> extends StatelessWidget {
   final bool isDisabled;
   final bool isHoliday;
   final bool isWeekend;
-  final S special;
+  final S? special;
   final CalendarStyle calendarStyle;
-  final CalendarBuilders calendarBuilders;
+  final CalendarBuilders<T, S> calendarBuilders;
 
   const CellContent({
     super.key,
@@ -121,7 +121,7 @@ class CellContent<S> extends StatelessWidget {
           );
     } else if (special != null) {
       cell = calendarBuilders.specialBuilder
-              ?.call(context, day, special, focusedDay) ??
+              ?.call(context, day, special as S, focusedDay) ??
           AnimatedContainer(
             duration: duration,
             margin: margin,

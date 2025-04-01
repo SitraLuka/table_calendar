@@ -631,7 +631,7 @@ class _TableCalendarState<T, S> extends State<TableCalendar<T, S>> {
         final isDisabled = _isDayDisabled(day);
         final isWeekend = _isWeekend(day, weekendDays: widget.weekendDays);
 
-        final content = CellContent(
+        final content = CellContent<T, S>(
           key: ValueKey('CellContent-${day.year}-${day.month}-${day.day}'),
           day: day,
           focusedDay: focusedDay,
