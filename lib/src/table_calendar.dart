@@ -33,7 +33,7 @@ typedef OnRangeSelected = void Function(
 enum RangeSelectionMode { disabled, toggledOff, toggledOn, enforced }
 
 /// Highly customizable, feature-packed Flutter calendar with gestures, animations and multiple formats.
-class TableCalendar<T> extends StatefulWidget {
+class TableCalendar<T, S> extends StatefulWidget {
   /// Locale to format `TableCalendar` dates with, for example: `'en_US'`.
   ///
   /// If nothing is provided, a default locale will be used.
@@ -155,7 +155,7 @@ class TableCalendar<T> extends StatefulWidget {
 
   /// Set of custom builders for `TableCalendar` to work with.
   /// Use those to fully tailor the UI.
-  final CalendarBuilders<T> calendarBuilders;
+  final CalendarBuilders<T, S> calendarBuilders;
 
   /// Current mode of range selection.
   ///
@@ -182,6 +182,9 @@ class TableCalendar<T> extends StatefulWidget {
 
   /// Function deciding whether given day is treated as a holiday.
   final bool Function(DateTime day)? holidayPredicate;
+
+  /// Function deciding whether given day is considered special.
+  final S? Function(DateTime day)? specialPredicate;
 
   /// Called whenever a day range gets selected.
   final OnRangeSelected? onRangeSelected;
@@ -260,6 +263,7 @@ class TableCalendar<T> extends StatefulWidget {
     this.loadEventsForDisabledDays = false,
     this.selectedDayPredicate,
     this.holidayPredicate,
+    this.specialPredicate,
     this.onRangeSelected,
     this.onDaySelected,
     this.onDayLongPressed,
@@ -284,10 +288,10 @@ class TableCalendar<T> extends StatefulWidget {
         currentDay = currentDay ?? DateTime.now();
 
   @override
-  State<TableCalendar<T>> createState() => _TableCalendarState<T>();
+  State<TableCalendar<T, S>> createState() => _TableCalendarState<T, S>();
 }
 
-class _TableCalendarState<T> extends State<TableCalendar<T>> {
+class _TableCalendarState<T, S> extends State<TableCalendar<T, S>> {
   late final PageController _pageController;
   late final ValueNotifier<DateTime> _focusedDay;
   late RangeSelectionMode _rangeSelectionMode;
@@ -301,7 +305,7 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
   }
 
   @override
-  void didUpdateWidget(TableCalendar<T> oldWidget) {
+  void didUpdateWidget(TableCalendar<T, S> oldWidget) {
     super.didUpdateWidget(oldWidget);
 
     if (_focusedDay.value != widget.focusedDay) {
@@ -643,6 +647,7 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
           isDisabled: isDisabled,
           isWeekend: isWeekend,
           isHoliday: widget.holidayPredicate?.call(day) ?? false,
+          special: widget.specialPredicate?.call(day),
           locale: widget.locale,
         );
 

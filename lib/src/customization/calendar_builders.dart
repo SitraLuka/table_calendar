@@ -21,6 +21,13 @@ typedef MarkerBuilder<T> = Widget? Function(
   List<T> events,
 );
 
+typedef SpecialBuilder<S> = Widget? Function(
+  BuildContext context,
+  DateTime day,
+  S special,
+  DateTime focusedDay,
+);
+
 /// Signature for a function that creates a background highlight for a given `day`.
 ///
 /// Used for highlighting current range selection.
@@ -32,7 +39,7 @@ typedef HighlightBuilder = Widget? Function(
 );
 
 /// Class containing all custom builders for `TableCalendar`.
-class CalendarBuilders<T> {
+class CalendarBuilders<T, S> {
   /// Custom builder for day cells, with a priority over any other builder.
   final FocusedDayBuilder? prioritizedBuilder;
 
@@ -63,6 +70,9 @@ class CalendarBuilders<T> {
 
   /// Custom builder for day cells that are marked as holidays by `holidayPredicate`.
   final FocusedDayBuilder? holidayBuilder;
+
+  /// Custom builder for day cells that are marked as special by `specialPredicate`.
+  final SpecialBuilder<S>? specialBuilder;
 
   /// Custom builder for day cells that do not match any other builder.
   final FocusedDayBuilder? defaultBuilder;
@@ -102,6 +112,7 @@ class CalendarBuilders<T> {
     this.outsideBuilder,
     this.disabledBuilder,
     this.holidayBuilder,
+    this.specialBuilder,
     this.defaultBuilder,
     this.rangeHighlightBuilder,
     this.singleMarkerBuilder,

@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:table_calendar/src/customization/calendar_builders.dart';
 import 'package:table_calendar/src/customization/calendar_style.dart';
 
-class CellContent extends StatelessWidget {
+class CellContent<S> extends StatelessWidget {
   final DateTime day;
   final DateTime focusedDay;
   final dynamic locale;
@@ -20,6 +20,7 @@ class CellContent extends StatelessWidget {
   final bool isDisabled;
   final bool isHoliday;
   final bool isWeekend;
+  final S special;
   final CalendarStyle calendarStyle;
   final CalendarBuilders calendarBuilders;
 
@@ -38,6 +39,7 @@ class CellContent extends StatelessWidget {
     required this.isOutside,
     required this.isDisabled,
     required this.isHoliday,
+    required this.special,
     required this.isWeekend,
     this.locale,
   });
@@ -116,6 +118,17 @@ class CellContent extends StatelessWidget {
             decoration: calendarStyle.todayDecoration,
             alignment: alignment,
             child: Text(text, style: calendarStyle.todayTextStyle),
+          );
+    } else if (special != null) {
+      cell = calendarBuilders.specialBuilder
+              ?.call(context, day, special, focusedDay) ??
+          AnimatedContainer(
+            duration: duration,
+            margin: margin,
+            padding: padding,
+            decoration: calendarStyle.specialDecoration,
+            alignment: alignment,
+            child: Text(text, style: calendarStyle.specialTextStyle),
           );
     } else if (isHoliday) {
       cell = calendarBuilders.holidayBuilder?.call(context, day, focusedDay) ??
