@@ -128,12 +128,6 @@ class CalendarStyle {
   /// Decoration for day cells that are marked as holidays by `holidayPredicate`.
   final Decoration holidayDecoration;
 
-  /// TextStyle for day cells that are marked as special by `specialPredicate`.
-  final TextStyle specialTextStyle;
-
-  /// Decoration for day cells that are marked as special by `specialPredicate`.
-  final Decoration specialDecoration;
-
   /// TextStyle for day cells that match `weekendDay` list.
   final TextStyle weekendTextStyle;
 
@@ -231,13 +225,6 @@ class CalendarStyle {
     this.holidayDecoration = const BoxDecoration(
       border: Border.fromBorderSide(
         BorderSide(color: Color(0xFF9FA8DA), width: 1.4),
-      ),
-      shape: BoxShape.circle,
-    ),
-    this.specialTextStyle = const TextStyle(color: Color(0xFF5CC064)),
-    this.specialDecoration = const BoxDecoration(
-      border: Border.fromBorderSide(
-        BorderSide(color: Color(0xFF6A8F6D), width: 1.4),
       ),
       shape: BoxShape.circle,
     ),

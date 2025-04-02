@@ -121,15 +121,7 @@ class CellContent<T, S> extends StatelessWidget {
           );
     } else if (special != null) {
       cell = calendarBuilders.specialBuilder
-              ?.call(context, day, special as S, focusedDay) ??
-          AnimatedContainer(
-            duration: duration,
-            margin: margin,
-            padding: padding,
-            decoration: calendarStyle.specialDecoration,
-            alignment: alignment,
-            child: Text(text, style: calendarStyle.specialTextStyle),
-          );
+          ?.call(context, day, special as S, focusedDay);
     } else if (isHoliday) {
       cell = calendarBuilders.holidayBuilder?.call(context, day, focusedDay) ??
           AnimatedContainer(
