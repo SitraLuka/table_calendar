@@ -120,8 +120,11 @@ class CellContent<T, S> extends StatelessWidget {
             child: Text(text, style: calendarStyle.todayTextStyle),
           );
     } else if (special != null) {
-      cell = calendarBuilders.specialBuilder
+      final specialWidget = calendarBuilders.specialBuilder
           ?.call(context, day, special as S, focusedDay);
+      if (specialWidget != null) {
+        cell = specialWidget;
+      }
     } else if (isHoliday) {
       cell = calendarBuilders.holidayBuilder?.call(context, day, focusedDay) ??
           AnimatedContainer(
