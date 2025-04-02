@@ -631,6 +631,9 @@ class _TableCalendarState<T, S> extends State<TableCalendar<T, S>> {
         final isDisabled = _isDayDisabled(day);
         final isWeekend = _isWeekend(day, weekendDays: widget.weekendDays);
 
+        final special = widget.specialPredicate?.call(day);
+        final isSpecial = special != null;
+
         final content = CellContent<T, S>(
           key: ValueKey('CellContent-${day.year}-${day.month}-${day.day}'),
           day: day,
@@ -647,7 +650,8 @@ class _TableCalendarState<T, S> extends State<TableCalendar<T, S>> {
           isDisabled: isDisabled,
           isWeekend: isWeekend,
           isHoliday: widget.holidayPredicate?.call(day) ?? false,
-          special: widget.specialPredicate?.call(day),
+          isSpecial: isSpecial,
+          special: special,
           locale: widget.locale,
         );
 

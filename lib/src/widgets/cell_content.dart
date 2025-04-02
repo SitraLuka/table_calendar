@@ -20,6 +20,7 @@ class CellContent<T, S> extends StatelessWidget {
   final bool isDisabled;
   final bool isHoliday;
   final bool isWeekend;
+  final bool isSpecial;
   final S? special;
   final CalendarStyle calendarStyle;
   final CalendarBuilders<T, S> calendarBuilders;
@@ -39,6 +40,7 @@ class CellContent<T, S> extends StatelessWidget {
     required this.isOutside,
     required this.isDisabled,
     required this.isHoliday,
+    required this.isSpecial,
     required this.special,
     required this.isWeekend,
     this.locale,
@@ -119,12 +121,17 @@ class CellContent<T, S> extends StatelessWidget {
             alignment: alignment,
             child: Text(text, style: calendarStyle.todayTextStyle),
           );
-    } else if (special != null) {
-      final specialWidget = calendarBuilders.specialBuilder
-          ?.call(context, day, special as S, focusedDay);
-      if (specialWidget != null) {
-        cell = specialWidget;
-      }
+    } else if (isSpecial) {
+      cell = calendarBuilders.specialBuilder
+              ?.call(context, day, special as S, focusedDay) ??
+          AnimatedContainer(
+            duration: duration,
+            margin: margin,
+            padding: padding,
+            decoration: calendarStyle.specialDecoration,
+            alignment: alignment,
+            child: Text(text, style: calendarStyle.specialTextStyle),
+          );
     } else if (isHoliday) {
       cell = calendarBuilders.holidayBuilder?.call(context, day, focusedDay) ??
           AnimatedContainer(
